@@ -91,6 +91,17 @@ class Agente:
             f"Hambre: {self.hambre:3d} | Energía: {self.energia:3d} | "
             f"Dinero: {self.dinero:4d} | Acción: {self.ultima_accion}"
         )
+        
+    def to_dict(self):
+        """Serializable representation of the agent's current state."""
+        return {
+            "nombre": self.nombre,
+            "profesion": self.profesion,
+            "hambre": self.hambre,
+            "energia": self.energia,
+            "dinero": self.dinero,
+            "ultima_accion": self.ultima_accion,
+        }
 
 
 if __name__ == "__main__":
