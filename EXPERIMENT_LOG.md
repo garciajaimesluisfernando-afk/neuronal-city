@@ -17,10 +17,6 @@ Each entry should include:
 
 ---
 
-## Entries
-
-## Entries
-
 ### 2026-08-13 — Phase 0: Repo setup
 - **AI used:** Claude
 - **Prompt(s):** Requested repo structure and guidance to initialize the Git repository connected to GitHub.
@@ -34,3 +30,10 @@ Each entry should include:
 - **Result:** Implemented `Agente` class with `comer()`, `descansar()`, `trabajar()`, and `vivir_un_dia()` methods. Tested with 3 scenarios: fresh agent, two agents with different professions over 10 days, and an edge case (agent with no money and low hunger). All behaved as expected — agents autonomously choose to eat, rest, or work based on their own state.
 - **Iterations:** 1 (worked correctly on first implementation)
 - **Notes:** Interesting emergent behavior even at this simple stage: agents naturally cycle between working, resting, and eating without being told to — purely from priority rules based on their internal state.
+
+### 2026-08-13 — Phase 1: Ciudad class (multiple agents, shared days)
+- **AI used:** Claude
+- **Prompt(s):** Requested a way to make several agents live together through shared days, building on the existing Agente class.
+- **Result:** Implemented `Ciudad` class that holds a list of agents and advances them together day by day, printing a daily report. Tested with 4 agents (3 different professions + 1 starting in poverty).
+- **Iterations:** 1
+- **Notes:** Interesting emergent behavior: an agent starting with low hunger and zero money gets stuck in a "poverty trap" — it always prioritizes eating (which it can't afford) and never gets to work, so it never earns money. Nobody programmed this specifically; it emerged from the priority rules. Worth deciding later whether to fix this (e.g. letting agents work anyway with a penalty) or keep it as a realistic feature of the simulation.
