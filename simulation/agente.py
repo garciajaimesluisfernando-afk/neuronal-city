@@ -48,13 +48,16 @@ class Agente:
         self.ultima_accion = None  # for logging what happened each day
 
     def comer(self):
-        """Eat if there's enough money. Reduces money, increases hunger stat."""
+        """Eat if there's enough money. Reduces money, increases hunger stat.
+        Returns True if the agent managed to eat, False otherwise."""
         if self.dinero >= FOOD_COST:
             self.dinero -= FOOD_COST
             self.hambre = clamp(self.hambre + FOOD_HUNGER_RECOVERY)
             self.ultima_accion = "comió"
+            return True
         else:
             self.ultima_accion = "no pudo comer (sin dinero)"
+            return False
 
     def descansar(self):
         """Rest to recover energy. Earns no money this day."""
@@ -71,20 +74,26 @@ class Agente:
     def vivir_un_dia(self):
         """
         Decide and perform one action for the day, based on priority:
-        1. Eat if hunger is low and there's money for it.
+        1. Try to eat if hunger is low.
+           - If eating fails (no money), work instead as a fallback —
+             otherwise the agent would get stuck forever, unable to
+             afford food and never earning money either.
         2. Rest if energy is low.
         3. Otherwise, work.
         Hunger always decays naturally at the end of the day.
         """
         if self.hambre <= HUNGER_THRESHOLD:
-            self.comer()
+            pudo_comer = self.comer()
+            if not pudo_comer:
+                self.trabajar()
         elif self.energia <= ENERGY_THRESHOLD:
             self.descansar()
         else:
             self.trabajar()
 
+        # Natural hunger decay happens every day regardless of action
         self.hambre = clamp(self.hambre - HUNGER_DECAY_PER_DAY)
-
+        
     def __str__(self):
         return (
             f"{self.nombre} ({self.profesion}) | "

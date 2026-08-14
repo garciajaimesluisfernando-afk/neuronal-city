@@ -30,9 +30,9 @@
         "nombre": "Pedro",
         "profesion": "mesero",
         "hambre": 5,
-        "energia": 100,
-        "dinero": 0,
-        "ultima_accion": "no pudo comer (sin dinero)"
+        "energia": 80,
+        "dinero": 15,
+        "ultima_accion": "trabajó como mesero (+15)"
       }
     ]
   },
@@ -66,10 +66,10 @@
       {
         "nombre": "Pedro",
         "profesion": "mesero",
-        "hambre": 0,
-        "energia": 100,
-        "dinero": 0,
-        "ultima_accion": "no pudo comer (sin dinero)"
+        "hambre": 40,
+        "energia": 80,
+        "dinero": 5,
+        "ultima_accion": "comió"
       }
     ]
   },
@@ -103,10 +103,10 @@
       {
         "nombre": "Pedro",
         "profesion": "mesero",
-        "hambre": 0,
-        "energia": 100,
-        "dinero": 0,
-        "ultima_accion": "no pudo comer (sin dinero)"
+        "hambre": 25,
+        "energia": 60,
+        "dinero": 20,
+        "ultima_accion": "trabajó como mesero (+15)"
       }
     ]
   },
@@ -140,10 +140,10 @@
       {
         "nombre": "Pedro",
         "profesion": "mesero",
-        "hambre": 0,
-        "energia": 100,
-        "dinero": 0,
-        "ultima_accion": "no pudo comer (sin dinero)"
+        "hambre": 60,
+        "energia": 60,
+        "dinero": 10,
+        "ultima_accion": "comió"
       }
     ]
   },
@@ -177,10 +177,10 @@
       {
         "nombre": "Pedro",
         "profesion": "mesero",
-        "hambre": 0,
-        "energia": 100,
-        "dinero": 0,
-        "ultima_accion": "no pudo comer (sin dinero)"
+        "hambre": 45,
+        "energia": 40,
+        "dinero": 25,
+        "ultima_accion": "trabajó como mesero (+15)"
       }
     ]
   },
@@ -214,10 +214,10 @@
       {
         "nombre": "Pedro",
         "profesion": "mesero",
-        "hambre": 0,
-        "energia": 100,
-        "dinero": 0,
-        "ultima_accion": "no pudo comer (sin dinero)"
+        "hambre": 30,
+        "energia": 20,
+        "dinero": 40,
+        "ultima_accion": "trabajó como mesero (+15)"
       }
     ]
   },
@@ -251,10 +251,10 @@
       {
         "nombre": "Pedro",
         "profesion": "mesero",
-        "hambre": 0,
-        "energia": 100,
-        "dinero": 0,
-        "ultima_accion": "no pudo comer (sin dinero)"
+        "hambre": 65,
+        "energia": 20,
+        "dinero": 30,
+        "ultima_accion": "comió"
       }
     ]
   }

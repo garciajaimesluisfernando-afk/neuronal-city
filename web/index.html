@@ -46,6 +46,7 @@
     <button id="btnAnterior">⟵ Día anterior</button>
     <span id="diaActual">Día: -</span>
     <button id="btnSiguiente">Día siguiente ⟶</button>
+    <button id="btnAutoplay">▶ Reproducir</button>
   </div>
 
   <canvas id="lienzo" width="600" height="400"></canvas>
@@ -169,6 +170,35 @@
 
     document.getElementById("btnAnterior").addEventListener("click", () => {
       dibujarDia(indiceActual - 1);
+    });
+
+    // --- Reproducción automática ---
+    const btnAutoplay = document.getElementById("btnAutoplay");
+    let intervaloAutoplay = null;
+
+    function detenerAutoplay() {
+      clearInterval(intervaloAutoplay);
+      intervaloAutoplay = null;
+      btnAutoplay.textContent = "▶ Reproducir";
+    }
+
+    function iniciarAutoplay() {
+      btnAutoplay.textContent = "⏸ Pausar";
+      intervaloAutoplay = setInterval(() => {
+        if (indiceActual >= historial.length - 1) {
+          detenerAutoplay();
+          return;
+        }
+        dibujarDia(indiceActual + 1);
+      }, 1000);
+    }
+
+    btnAutoplay.addEventListener("click", () => {
+      if (intervaloAutoplay) {
+        detenerAutoplay();
+      } else {
+        iniciarAutoplay();
+      }
     });
 
     cargarHistorial();
