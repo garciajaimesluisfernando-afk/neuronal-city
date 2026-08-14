@@ -1,0 +1,261 @@
+[
+  {
+    "dia": 1,
+    "agentes": [
+      {
+        "nombre": "Luis",
+        "profesion": "programador",
+        "hambre": 85,
+        "energia": 80,
+        "dinero": 60,
+        "ultima_accion": "trabajó como programador (+40)"
+      },
+      {
+        "nombre": "Ana",
+        "profesion": "mesero",
+        "hambre": 85,
+        "energia": 80,
+        "dinero": 35,
+        "ultima_accion": "trabajó como mesero (+15)"
+      },
+      {
+        "nombre": "Carlos",
+        "profesion": "repartidor",
+        "hambre": 85,
+        "energia": 80,
+        "dinero": 40,
+        "ultima_accion": "trabajó como repartidor (+20)"
+      },
+      {
+        "nombre": "Pedro",
+        "profesion": "mesero",
+        "hambre": 5,
+        "energia": 100,
+        "dinero": 0,
+        "ultima_accion": "no pudo comer (sin dinero)"
+      }
+    ]
+  },
+  {
+    "dia": 2,
+    "agentes": [
+      {
+        "nombre": "Luis",
+        "profesion": "programador",
+        "hambre": 70,
+        "energia": 60,
+        "dinero": 100,
+        "ultima_accion": "trabajó como programador (+40)"
+      },
+      {
+        "nombre": "Ana",
+        "profesion": "mesero",
+        "hambre": 70,
+        "energia": 60,
+        "dinero": 50,
+        "ultima_accion": "trabajó como mesero (+15)"
+      },
+      {
+        "nombre": "Carlos",
+        "profesion": "repartidor",
+        "hambre": 70,
+        "energia": 60,
+        "dinero": 60,
+        "ultima_accion": "trabajó como repartidor (+20)"
+      },
+      {
+        "nombre": "Pedro",
+        "profesion": "mesero",
+        "hambre": 0,
+        "energia": 100,
+        "dinero": 0,
+        "ultima_accion": "no pudo comer (sin dinero)"
+      }
+    ]
+  },
+  {
+    "dia": 3,
+    "agentes": [
+      {
+        "nombre": "Luis",
+        "profesion": "programador",
+        "hambre": 55,
+        "energia": 40,
+        "dinero": 140,
+        "ultima_accion": "trabajó como programador (+40)"
+      },
+      {
+        "nombre": "Ana",
+        "profesion": "mesero",
+        "hambre": 55,
+        "energia": 40,
+        "dinero": 65,
+        "ultima_accion": "trabajó como mesero (+15)"
+      },
+      {
+        "nombre": "Carlos",
+        "profesion": "repartidor",
+        "hambre": 55,
+        "energia": 40,
+        "dinero": 80,
+        "ultima_accion": "trabajó como repartidor (+20)"
+      },
+      {
+        "nombre": "Pedro",
+        "profesion": "mesero",
+        "hambre": 0,
+        "energia": 100,
+        "dinero": 0,
+        "ultima_accion": "no pudo comer (sin dinero)"
+      }
+    ]
+  },
+  {
+    "dia": 4,
+    "agentes": [
+      {
+        "nombre": "Luis",
+        "profesion": "programador",
+        "hambre": 40,
+        "energia": 20,
+        "dinero": 180,
+        "ultima_accion": "trabajó como programador (+40)"
+      },
+      {
+        "nombre": "Ana",
+        "profesion": "mesero",
+        "hambre": 40,
+        "energia": 20,
+        "dinero": 80,
+        "ultima_accion": "trabajó como mesero (+15)"
+      },
+      {
+        "nombre": "Carlos",
+        "profesion": "repartidor",
+        "hambre": 40,
+        "energia": 20,
+        "dinero": 100,
+        "ultima_accion": "trabajó como repartidor (+20)"
+      },
+      {
+        "nombre": "Pedro",
+        "profesion": "mesero",
+        "hambre": 0,
+        "energia": 100,
+        "dinero": 0,
+        "ultima_accion": "no pudo comer (sin dinero)"
+      }
+    ]
+  },
+  {
+    "dia": 5,
+    "agentes": [
+      {
+        "nombre": "Luis",
+        "profesion": "programador",
+        "hambre": 25,
+        "energia": 60,
+        "dinero": 180,
+        "ultima_accion": "descansó"
+      },
+      {
+        "nombre": "Ana",
+        "profesion": "mesero",
+        "hambre": 25,
+        "energia": 60,
+        "dinero": 80,
+        "ultima_accion": "descansó"
+      },
+      {
+        "nombre": "Carlos",
+        "profesion": "repartidor",
+        "hambre": 25,
+        "energia": 60,
+        "dinero": 100,
+        "ultima_accion": "descansó"
+      },
+      {
+        "nombre": "Pedro",
+        "profesion": "mesero",
+        "hambre": 0,
+        "energia": 100,
+        "dinero": 0,
+        "ultima_accion": "no pudo comer (sin dinero)"
+      }
+    ]
+  },
+  {
+    "dia": 6,
+    "agentes": [
+      {
+        "nombre": "Luis",
+        "profesion": "programador",
+        "hambre": 60,
+        "energia": 60,
+        "dinero": 170,
+        "ultima_accion": "comió"
+      },
+      {
+        "nombre": "Ana",
+        "profesion": "mesero",
+        "hambre": 60,
+        "energia": 60,
+        "dinero": 70,
+        "ultima_accion": "comió"
+      },
+      {
+        "nombre": "Carlos",
+        "profesion": "repartidor",
+        "hambre": 60,
+        "energia": 60,
+        "dinero": 90,
+        "ultima_accion": "comió"
+      },
+      {
+        "nombre": "Pedro",
+        "profesion": "mesero",
+        "hambre": 0,
+        "energia": 100,
+        "dinero": 0,
+        "ultima_accion": "no pudo comer (sin dinero)"
+      }
+    ]
+  },
+  {
+    "dia": 7,
+    "agentes": [
+      {
+        "nombre": "Luis",
+        "profesion": "programador",
+        "hambre": 45,
+        "energia": 40,
+        "dinero": 210,
+        "ultima_accion": "trabajó como programador (+40)"
+      },
+      {
+        "nombre": "Ana",
+        "profesion": "mesero",
+        "hambre": 45,
+        "energia": 40,
+        "dinero": 85,
+        "ultima_accion": "trabajó como mesero (+15)"
+      },
+      {
+        "nombre": "Carlos",
+        "profesion": "repartidor",
+        "hambre": 45,
+        "energia": 40,
+        "dinero": 110,
+        "ultima_accion": "trabajó como repartidor (+20)"
+      },
+      {
+        "nombre": "Pedro",
+        "profesion": "mesero",
+        "hambre": 0,
+        "energia": 100,
+        "dinero": 0,
+        "ultima_accion": "no pudo comer (sin dinero)"
+      }
+    ]
+  }
+]

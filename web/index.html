@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>NEURONAL-CITY</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+    }
+    #controles {
+      margin: 16px 0;
+    }
+    button {
+      background: #38bdf8;
+      border: none;
+      color: #0f172a;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #7dd3fc;
+    }
+    #info {
+      margin-top: 12px;
+      min-height: 24px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏙️ NEURONAL-CITY</h1>
+  <div id="controles">
+    <button id="btnAnterior">⟵ Día anterior</button>
+    <span id="diaActual">Día: -</span>
+    <button id="btnSiguiente">Día siguiente ⟶</button>
+  </div>
+
+  <canvas id="lienzo" width="600" height="400"></canvas>
+  <div id="info">Pasa el mouse sobre un agente para ver su estado</div>
+
+  <script>
+    const canvas = document.getElementById("lienzo");
+    const ctx = canvas.getContext("2d");
+    const infoDiv = document.getElementById("info");
+    const diaSpan = document.getElementById("diaActual");
+
+    let historial = [];
+    let indiceActual = 0;
+    let posiciones = []; // {x, y, agente} para detectar mouse encima
+
+    // Un color distinto por profesión, para diferenciar a simple vista
+    const COLOR_POR_PROFESION = {
+      mesero: "#f97316",
+      repartidor: "#22c55e",
+      programador: "#38bdf8",
+    };
+
+    async function cargarHistorial() {
+      const respuesta = await fetch("historial.json");
+      historial = await respuesta.json();
+      dibujarDia(0);
+    }
+
+    function dibujarDia(indice) {
+      if (indice < 0 || indice >= historial.length) return;
+      indiceActual = indice;
+
+      const snapshot = historial[indiceActual];
+      diaSpan.textContent = `Día: ${snapshot.dia}`;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      posiciones = [];
+
+      const agentes = snapshot.agentes;
+      const espacio = canvas.width / (agentes.length + 1);
+
+      agentes.forEach((agente, i) => {
+        const x = espacio * (i + 1);
+        const y = canvas.height / 2;
+        const color = COLOR_POR_PROFESION[agente.profesion] || "#e2e8f0";
+
+        // Círculo del agente
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        // Nombre debajo
+        ctx.fillStyle = "#e2e8f0";
+        ctx.font = "13px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(agente.nombre, x, y + 40);
+
+        posiciones.push({ x, y, radio: 20, agente });
+      });
+    }
+
+    canvas.addEventListener("mousemove", (evento) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = evento.clientX - rect.left;
+      const my = evento.clientY - rect.top;
+
+      const encontrado = posiciones.find((p) => {
+        const dx = mx - p.x;
+        const dy = my - p.y;
+        return Math.sqrt(dx * dx + dy * dy) <= p.radio;
+      });
+
+      if (encontrado) {
+        const a = encontrado.agente;
+        infoDiv.textContent =
+          `${a.nombre} (${a.profesion}) — Hambre: ${a.hambre} | ` +
+          `Energía: ${a.energia} | Dinero: ${a.dinero} | Última acción: ${a.ultima_accion}`;
+      } else {
+        infoDiv.textContent = "Pasa el mouse sobre un agente para ver su estado";
+      }
+    });
+
+    document.getElementById("btnSiguiente").addEventListener("click", () => {
+      dibujarDia(indiceActual + 1);
+    });
+
+    document.getElementById("btnAnterior").addEventListener("click", () => {
+      dibujarDia(indiceActual - 1);
+    });
+
+    cargarHistorial();
+  </script>
+
+</body>
+</html>
