@@ -53,3 +53,32 @@ Each entry should include:
 - **Result:** Agents now appear at a random position on the canvas each day, with three small bars showing their hunger, energy, and money at a glance. Money has no real limit, so a visual cap (300) was used just for the bar's fill percentage — the real number is still shown in the hover tooltip.
 - **Iterations:** 1
 - **Notes:** Small but important design choice: separating the "real" unlimited value (money) from its "visual representation" (a capped bar) — a common pattern when visualizing unbounded data.
+
+
+### 2026-08-14 — Phase 1 fix: poverty trap
+- **AI used:** Claude
+- **Prompt(s):** Requested a fix for an emergent bug found earlier — an agent with low hunger and no money would get stuck forever, always trying to eat and never earning money to afford it.
+- **Result:** `comer()` now returns True/False depending on whether the agent could actually eat. `vivir_un_dia()` uses this: if eating fails, the agent works instead as a fallback, so it can earn money and eat the next day.
+- **Iterations:** 1
+- **Notes:** Fixing an emergent bug like this required understanding *why* it happened first — a good example of debugging behavior that comes from rules interacting, not from a broken line of code.
+
+### 2026-08-14 — Phase 2: autoplay button
+- **AI used:** Claude
+- **Prompt(s):** Requested a "play" button that automatically advances days, like a simple animation.
+- **Result:** Added a "▶ Reproducir" / "⏸ Pausar" toggle button. When active, it advances one day per second automatically and stops on its own when it reaches the last day in the history.
+- **Iterations:** 1
+- **Notes:** Small UX addition, but makes the demo much more shareable — no need to manually click through days anymore.
+
+
+### 2026-08-14 — Phase 3 planning: a debate between two AIs
+- **AI used:** Claude + ChatGPT
+- **Prompt(s):** Asked Claude to review the project status and propose what Phase 3 should include (relationships, economic depth, random events, or anything else it considered important) — without implementing anything yet, proposal only. The same context was then shared with ChatGPT for its independent perspective.
+- **Result:** Both AIs agreed that a metrics system (population, average hunger/energy, wealth distribution, etc.) should come before any of the bigger Phase 3 features, since it gives an objective way to measure whether later changes actually help or hurt the city.
+
+  Where they disagreed was on the order of the rest: 
+  - **ChatGPT's proposal:** Relationships → Economy → Events. Reasoning: relationships turn isolated agents into a "society" early, which is narratively richer.
+  - **Claude's proposal:** Economy → Events → Relationships. Reasoning: economy is a direct extension of systems that already exist (Agente/Ciudad already handle money and work), Events are technically simple (temporary changes to global variables) with high narrative payoff, and Relationships are the most complex to implement (bidirectional state, new visualization needs) — better attempted with more experience under the belt.
+
+  **Decision:** The human project director reviewed both arguments and chose Claude's sequence: Metrics → Economy → Events → Relationships → Personalities.
+- **Iterations:** N/A (planning discussion, not code)
+- **Notes:** This is a good example of what "director + two AI collaborators" actually looks like in practice — not just picking whichever AI answers first, but comparing reasoning and making an informed call. Worth highlighting in future LinkedIn updates about the project.

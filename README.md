@@ -32,10 +32,25 @@ web/ → Web-based visualization (HTML/JS/Canvas)
 - **JSON snapshots** — the engine exports the city's state over time
 - **HTML/JS/Canvas** — static web visualization that reads and animates the snapshots (deployable via GitHub Pages, no backend needed)
 
+
 ## Roadmap
 
-- [ ] Phase 0 — Repo setup & documentation
-- [ ] Phase 1 — MVP: simulation engine (console output)
-- [ ] Phase 2 — First web visualization
-- [ ] Phase 3 — Relationships, economy, events
-- [ ] Phase 4 — Portfolio polish
+- [x] Phase 0 — Repo setup & documentation
+- [x] Phase 1 — MVP: simulation engine (agents with needs, city loop, JSON export)
+- [x] Phase 2 — First web visualization (canvas, movement, stat bars, autoplay)
+- [ ] Phase 3.0 — City-wide metrics (survival, economy, wellbeing stats over time)
+- [ ] Phase 3.1 — Deeper economy (salaries, prices, savings, inequality)
+- [ ] Phase 3.2 — Random events (inflation, crises, festivals — consequence-driven)
+- [ ] Phase 3.3 — Social relationships between agents
+- [ ] Phase 4 — Agent personalities & emergent behavior
+- [ ] Phase 5 — Portfolio polish
+
+## A real debate between two AIs
+
+An interesting moment happened during planning: ChatGPT and Claude proposed **different** orders for Phase 3. ChatGPT argued for Relationships → Economy → Events, prioritizing narrative richness first. Claude argued for Economy → Events → Relationships, prioritizing lower implementation risk and building on systems that already existed.
+
+The human project director reviewed both arguments and made the call:
+
+> ChatGPT initially proposed Relations → Economy → Events. Claude argued for Economy → Events → Relations based on implementation complexity and dependency on existing systems. After reviewing both approaches, the human project director selected Claude's sequence.
+
+Full reasoning from both AIs is logged in [`EXPERIMENT_LOG.md`](./EXPERIMENT_LOG.md).
