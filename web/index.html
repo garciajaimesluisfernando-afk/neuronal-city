@@ -59,7 +59,7 @@
 
     let historial = [];
     let indiceActual = 0;
-    let posiciones = []; // {x, y, agente} para detectar mouse encima
+    let posiciones = []; // {x, y, radio, agente} para detectar mouse encima
 
     // Un color distinto por profesión, para diferenciar a simple vista
     const COLOR_POR_PROFESION = {
@@ -68,10 +68,37 @@
       programador: "#38bdf8",
     };
 
+    // Techo visual para la barra de dinero (el dinero real no tiene límite,
+    // pero la barra sí necesita uno para poder dibujarse)
+    const DINERO_MAX_VISUAL = 300;
+
+    const RADIO_AGENTE = 18;
+    const MARGEN = 50; // para que ni el círculo ni las barras se corten con el borde
+
+    function posicionAleatoria() {
+      return {
+        x: MARGEN + Math.random() * (canvas.width - MARGEN * 2),
+        y: MARGEN + Math.random() * (canvas.height - MARGEN * 2),
+      };
+    }
+
     async function cargarHistorial() {
       const respuesta = await fetch("historial.json");
       historial = await respuesta.json();
       dibujarDia(0);
+    }
+
+    function dibujarBarra(x, y, valor, valorMax, color, ancho) {
+      const alto = 4;
+      const proporcion = Math.min(1, Math.max(0, valor / valorMax));
+
+      // Fondo de la barra (vacío)
+      ctx.fillStyle = "#334155";
+      ctx.fillRect(x - ancho / 2, y, ancho, alto);
+
+      // Relleno según el valor actual
+      ctx.fillStyle = color;
+      ctx.fillRect(x - ancho / 2, y, ancho * proporcion, alto);
     }
 
     function dibujarDia(indice) {
@@ -84,27 +111,34 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       posiciones = [];
 
-      const agentes = snapshot.agentes;
-      const espacio = canvas.width / (agentes.length + 1);
+      const anchoBarra = 50;
 
-      agentes.forEach((agente, i) => {
-        const x = espacio * (i + 1);
-        const y = canvas.height / 2;
+      snapshot.agentes.forEach((agente) => {
+        const { x, y } = posicionAleatoria();
         const color = COLOR_POR_PROFESION[agente.profesion] || "#e2e8f0";
 
         // Círculo del agente
         ctx.beginPath();
-        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.arc(x, y, RADIO_AGENTE, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
-        // Nombre debajo
+        // Nombre debajo del círculo
         ctx.fillStyle = "#e2e8f0";
         ctx.font = "13px sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText(agente.nombre, x, y + 40);
+        ctx.fillText(agente.nombre, x, y + RADIO_AGENTE + 14);
 
-        posiciones.push({ x, y, radio: 20, agente });
+        // Tres barras arriba del círculo: hambre (amarilla), energía (azul), dinero (verde)
+        const yBarraHambre = y - RADIO_AGENTE - 24;
+        const yBarraEnergia = y - RADIO_AGENTE - 17;
+        const yBarraDinero = y - RADIO_AGENTE - 10;
+
+        dibujarBarra(x, yBarraHambre, agente.hambre, 100, "#facc15", anchoBarra);
+        dibujarBarra(x, yBarraEnergia, agente.energia, 100, "#3b82f6", anchoBarra);
+        dibujarBarra(x, yBarraDinero, agente.dinero, DINERO_MAX_VISUAL, "#22c55e", anchoBarra);
+
+        posiciones.push({ x, y, radio: RADIO_AGENTE, agente });
       });
     }
 
