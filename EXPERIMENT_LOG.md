@@ -37,3 +37,19 @@ Each entry should include:
 - **Result:** Implemented `Ciudad` class that holds a list of agents and advances them together day by day, printing a daily report. Tested with 4 agents (3 different professions + 1 starting in poverty).
 - **Iterations:** 1
 - **Notes:** Interesting emergent behavior: an agent starting with low hunger and zero money gets stuck in a "poverty trap" — it always prioritizes eating (which it can't afford) and never gets to work, so it never earns money. Nobody programmed this specifically; it emerged from the priority rules. Worth deciding later whether to fix this (e.g. letting agents work anyway with a penalty) or keep it as a realistic feature of the simulation.
+
+
+### 2026-08-13 — Phase 2: First web visualization
+- **AI used:** Claude
+- **Prompt(s):** Requested a simple web page that reads historial.json and shows agents as colored circles on a canvas, with day navigation and hover info.
+- **Result:** Built `web/index.html` — a self-contained HTML/CSS/JS page with a canvas showing one circle per agent (colored by profession), day navigation buttons, and hover tooltips showing full agent state. Needed a local server (`python -m http.server`) to test it, since browsers block reading local files directly for security.
+- **Iterations:** 2 — first attempt showed a blank page because the file hadn't actually been saved to disk before testing; fixed by saving and restarting the server.
+- **Notes:** Real vibecoding lesson: the code being correct isn't enough if you forget to save the file. Good reminder to always double-check the browser's "view source" when something looks blank — it tells you what the server is actually sending, not what you think you wrote.
+
+
+### 2026-08-13 — Phase 2: agent movement + stat bars
+- **AI used:** Claude
+- **Prompt(s):** Requested random agent movement between days and visual bars (yellow=hunger, blue=energy, green=money) above each agent.
+- **Result:** Agents now appear at a random position on the canvas each day, with three small bars showing their hunger, energy, and money at a glance. Money has no real limit, so a visual cap (300) was used just for the bar's fill percentage — the real number is still shown in the hover tooltip.
+- **Iterations:** 1
+- **Notes:** Small but important design choice: separating the "real" unlimited value (money) from its "visual representation" (a capped bar) — a common pattern when visualizing unbounded data.
