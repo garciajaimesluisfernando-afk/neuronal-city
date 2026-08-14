@@ -37,6 +37,42 @@
       min-height: 24px;
       font-size: 14px;
     }
+    #panelMetricas {
+      max-width: 600px;
+      margin: 20px auto 0;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: left;
+    }
+    #panelMetricas h3 {
+      margin: 0 0 12px 0;
+      font-size: 15px;
+      text-align: center;
+    }
+    #metricasGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      font-size: 13px;
+    }
+    .metrica {
+      background: #0f172a;
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    .metrica .valor {
+      font-size: 18px;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+    .metrica .etiqueta {
+      color: #94a3b8;
+      font-size: 11px;
+      margin-top: 2px;
+    }
   </style>
 </head>
 <body>
@@ -51,6 +87,11 @@
 
   <canvas id="lienzo" width="600" height="400"></canvas>
   <div id="info">Pasa el mouse sobre un agente para ver su estado</div>
+
+  <div id="panelMetricas">
+    <h3>📊 Métricas de la ciudad</h3>
+    <div id="metricasGrid"></div>
+  </div>
 
   <script>
     const canvas = document.getElementById("lienzo");
@@ -101,6 +142,35 @@
       ctx.fillStyle = color;
       ctx.fillRect(x - ancho / 2, y, ancho * proporcion, alto);
     }
+    function dibujarMetricas(metricas) {
+      const grid = document.getElementById("metricasGrid");
+      if (!metricas) {
+        grid.innerHTML = "";
+        return;
+      }
+
+      const items = [
+        { valor: metricas.poblacion, etiqueta: "Población" },
+        { valor: metricas.agentes_hambre_critica, etiqueta: "Hambre crítica" },
+        { valor: metricas.agentes_sin_dinero, etiqueta: "Sin dinero" },
+        { valor: metricas.dinero_total, etiqueta: "Dinero total" },
+        { valor: metricas.dinero_promedio, etiqueta: "Dinero promedio" },
+        { valor: `${metricas.dinero_min} - ${metricas.dinero_max}`, etiqueta: "Rango de dinero" },
+        { valor: metricas.hambre_promedio, etiqueta: "Hambre promedio" },
+        { valor: metricas.energia_promedio, etiqueta: "Energía promedio" },
+      ];
+
+      grid.innerHTML = items
+        .map(
+          (item) => `
+        <div class="metrica">
+          <div class="valor">${item.valor}</div>
+          <div class="etiqueta">${item.etiqueta}</div>
+        </div>
+      `
+        )
+        .join("");
+    }
 
     function dibujarDia(indice) {
       if (indice < 0 || indice >= historial.length) return;
@@ -108,6 +178,7 @@
 
       const snapshot = historial[indiceActual];
       diaSpan.textContent = `Día: ${snapshot.dia}`;
+      dibujarMetricas(snapshot.metricas);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       posiciones = [];

@@ -1,6 +1,17 @@
 [
   {
     "dia": 1,
+    "metricas": {
+      "poblacion": 4,
+      "agentes_hambre_critica": 1,
+      "agentes_sin_dinero": 0,
+      "dinero_total": 150,
+      "dinero_promedio": 37.5,
+      "dinero_max": 60,
+      "dinero_min": 15,
+      "hambre_promedio": 65.0,
+      "energia_promedio": 80.0
+    },
     "agentes": [
       {
         "nombre": "Luis",
@@ -38,6 +49,17 @@
   },
   {
     "dia": 2,
+    "metricas": {
+      "poblacion": 4,
+      "agentes_hambre_critica": 0,
+      "agentes_sin_dinero": 0,
+      "dinero_total": 215,
+      "dinero_promedio": 53.75,
+      "dinero_max": 100,
+      "dinero_min": 5,
+      "hambre_promedio": 62.5,
+      "energia_promedio": 65.0
+    },
     "agentes": [
       {
         "nombre": "Luis",
@@ -75,6 +97,17 @@
   },
   {
     "dia": 3,
+    "metricas": {
+      "poblacion": 4,
+      "agentes_hambre_critica": 1,
+      "agentes_sin_dinero": 0,
+      "dinero_total": 305,
+      "dinero_promedio": 76.25,
+      "dinero_max": 140,
+      "dinero_min": 20,
+      "hambre_promedio": 47.5,
+      "energia_promedio": 45.0
+    },
     "agentes": [
       {
         "nombre": "Luis",
@@ -112,6 +145,17 @@
   },
   {
     "dia": 4,
+    "metricas": {
+      "poblacion": 4,
+      "agentes_hambre_critica": 0,
+      "agentes_sin_dinero": 0,
+      "dinero_total": 370,
+      "dinero_promedio": 92.5,
+      "dinero_max": 180,
+      "dinero_min": 10,
+      "hambre_promedio": 45.0,
+      "energia_promedio": 30.0
+    },
     "agentes": [
       {
         "nombre": "Luis",
@@ -149,6 +193,17 @@
   },
   {
     "dia": 5,
+    "metricas": {
+      "poblacion": 4,
+      "agentes_hambre_critica": 3,
+      "agentes_sin_dinero": 0,
+      "dinero_total": 385,
+      "dinero_promedio": 96.25,
+      "dinero_max": 180,
+      "dinero_min": 25,
+      "hambre_promedio": 30.0,
+      "energia_promedio": 55.0
+    },
     "agentes": [
       {
         "nombre": "Luis",
@@ -186,6 +241,17 @@
   },
   {
     "dia": 6,
+    "metricas": {
+      "poblacion": 4,
+      "agentes_hambre_critica": 1,
+      "agentes_sin_dinero": 0,
+      "dinero_total": 370,
+      "dinero_promedio": 92.5,
+      "dinero_max": 170,
+      "dinero_min": 40,
+      "hambre_promedio": 52.5,
+      "energia_promedio": 50.0
+    },
     "agentes": [
       {
         "nombre": "Luis",
@@ -223,6 +289,17 @@
   },
   {
     "dia": 7,
+    "metricas": {
+      "poblacion": 4,
+      "agentes_hambre_critica": 0,
+      "agentes_sin_dinero": 0,
+      "dinero_total": 435,
+      "dinero_promedio": 108.75,
+      "dinero_max": 210,
+      "dinero_min": 30,
+      "hambre_promedio": 50.0,
+      "energia_promedio": 35.0
+    },
     "agentes": [
       {
         "nombre": "Luis",

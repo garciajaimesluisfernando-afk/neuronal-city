@@ -82,3 +82,11 @@ Each entry should include:
   **Decision:** The human project director reviewed both arguments and chose Claude's sequence: Metrics → Economy → Events → Relationships → Personalities.
 - **Iterations:** N/A (planning discussion, not code)
 - **Notes:** This is a good example of what "director + two AI collaborators" actually looks like in practice — not just picking whichever AI answers first, but comparing reasoning and making an informed call. Worth highlighting in future LinkedIn updates about the project.
+
+
+### 2026-08-14 — Phase 3.0: city-wide metrics
+- **AI used:** Claude
+- **Prompt(s):** Requested a metrics system for the city (survival, economy, wellbeing stats), agreed on by both Claude and ChatGPT as the first priority for Phase 3. Then requested a panel in the web page to display these metrics per day.
+- **Result:** Added `calcular_metricas()` to `Ciudad`, computing population, agents with critical hunger, agents with no money, total/average/min/max money, and average hunger/energy. These are now included in every daily snapshot in `historial.json`. Added a metrics panel below the canvas in the web page, showing all 8 numbers, updating as the day changes.
+- **Iterations:** 2 — the metrics panel showed empty at first because part of the JavaScript (the `dibujarMetricas` function) hadn't actually been saved into the file, even though it looked pasted. Diagnosed using the browser console (`typeof dibujarMetricas` returned `undefined`) and a text search in the editor.
+- **Notes:** Real lesson: "I pasted it" doesn't always mean it landed — verifying with the browser console (or a simple search in the file) is more reliable than assuming. Next improvement planned: move the metrics panel next to the canvas instead of below it, for better layout.
