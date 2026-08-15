@@ -16,6 +16,21 @@
       border: 1px solid #334155;
       border-radius: 8px;
     }
+    #contenedorPrincipal {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto;
+
+    #columnaCanvas {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 600px; /* mismo ancho que el canvas, evita que el layout se mueva */
+    }
     #controles {
       margin: 16px 0;
     }
@@ -36,10 +51,11 @@
       margin-top: 12px;
       min-height: 24px;
       font-size: 14px;
+      width: 100%;
+      word-wrap: break-word; /* si el texto es muy largo, salta de línea en vez de estirar el layout */
     }
     #panelMetricas {
-      max-width: 600px;
-      margin: 20px auto 0;
+      width: 220px;
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 8px;
@@ -53,7 +69,7 @@
     }
     #metricasGrid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
       gap: 10px;
       font-size: 13px;
     }
@@ -78,19 +94,24 @@
 <body>
 
   <h1>🏙️ NEURONAL-CITY</h1>
-  <div id="controles">
-    <button id="btnAnterior">⟵ Día anterior</button>
-    <span id="diaActual">Día: -</span>
-    <button id="btnSiguiente">Día siguiente ⟶</button>
-    <button id="btnAutoplay">▶ Reproducir</button>
-  </div>
 
-  <canvas id="lienzo" width="600" height="400"></canvas>
-  <div id="info">Pasa el mouse sobre un agente para ver su estado</div>
+  <div id="contenedorPrincipal">
+    <div id="columnaCanvas">
+      <div id="controles">
+        <button id="btnAnterior">⟵ Día anterior</button>
+        <span id="diaActual">Día: -</span>
+        <button id="btnSiguiente">Día siguiente ⟶</button>
+        <button id="btnAutoplay">▶ Reproducir</button>
+      </div>
 
-  <div id="panelMetricas">
-    <h3>📊 Métricas de la ciudad</h3>
-    <div id="metricasGrid"></div>
+      <canvas id="lienzo" width="600" height="400"></canvas>
+      <div id="info">Pasa el mouse sobre un agente para ver su estado</div>
+    </div>
+
+    <div id="panelMetricas">
+      <h3>📊 Métricas</h3>
+      <div id="metricasGrid"></div>
+    </div>
   </div>
 
   <script>
@@ -103,19 +124,15 @@
     let indiceActual = 0;
     let posiciones = []; // {x, y, radio, agente} para detectar mouse encima
 
-    // Un color distinto por profesión, para diferenciar a simple vista
     const COLOR_POR_PROFESION = {
       mesero: "#f97316",
       repartidor: "#22c55e",
       programador: "#38bdf8",
     };
 
-    // Techo visual para la barra de dinero (el dinero real no tiene límite,
-    // pero la barra sí necesita uno para poder dibujarse)
     const DINERO_MAX_VISUAL = 300;
-
     const RADIO_AGENTE = 18;
-    const MARGEN = 50; // para que ni el círculo ni las barras se corten con el borde
+    const MARGEN = 50;
 
     function posicionAleatoria() {
       return {
@@ -133,15 +150,12 @@
     function dibujarBarra(x, y, valor, valorMax, color, ancho) {
       const alto = 4;
       const proporcion = Math.min(1, Math.max(0, valor / valorMax));
-
-      // Fondo de la barra (vacío)
       ctx.fillStyle = "#334155";
       ctx.fillRect(x - ancho / 2, y, ancho, alto);
-
-      // Relleno según el valor actual
       ctx.fillStyle = color;
       ctx.fillRect(x - ancho / 2, y, ancho * proporcion, alto);
     }
+
     function dibujarMetricas(metricas) {
       const grid = document.getElementById("metricasGrid");
       if (!metricas) {
@@ -189,19 +203,16 @@
         const { x, y } = posicionAleatoria();
         const color = COLOR_POR_PROFESION[agente.profesion] || "#e2e8f0";
 
-        // Círculo del agente
         ctx.beginPath();
         ctx.arc(x, y, RADIO_AGENTE, 0, Math.PI * 2);
         ctx.fillStyle = color;
         ctx.fill();
 
-        // Nombre debajo del círculo
         ctx.fillStyle = "#e2e8f0";
         ctx.font = "13px sans-serif";
         ctx.textAlign = "center";
         ctx.fillText(agente.nombre, x, y + RADIO_AGENTE + 14);
 
-        // Tres barras arriba del círculo: hambre (amarilla), energía (azul), dinero (verde)
         const yBarraHambre = y - RADIO_AGENTE - 24;
         const yBarraEnergia = y - RADIO_AGENTE - 17;
         const yBarraDinero = y - RADIO_AGENTE - 10;
@@ -243,7 +254,6 @@
       dibujarDia(indiceActual - 1);
     });
 
-    // --- Reproducción automática ---
     const btnAutoplay = document.getElementById("btnAutoplay");
     let intervaloAutoplay = null;
 
