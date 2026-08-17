@@ -6,7 +6,11 @@ through shared days, and exports the city's history as JSON snapshots
 """
 
 import json
-from agente import Agente, HUNGER_THRESHOLD
+from agente import Agente, HUNGER_THRESHOLD, DEFAULT_FOOD_COST
+
+# --- City economy settings ---
+RENTA_MONTO = 25          # rent charged periodically
+RENTA_CADA_DIAS = 7       # how often rent is due ("once a week")
 
 
 class Ciudad:
@@ -15,15 +19,21 @@ class Ciudad:
         self.agentes = []
         self.dia_actual = 0
         self.historial = []  # one snapshot dict per day
+        self.precio_comida = DEFAULT_FOOD_COST  # shared by the whole city; can change over time (Phase 3.2)
 
     def agregar_agente(self, agente):
         self.agentes.append(agente)
 
     def avanzar_dia(self):
-        """Make every agent live one day, then advance the city's day counter."""
+        """Make every agent live one day, charge rent if it's due,
+        then advance the city's day counter."""
         self.dia_actual += 1
         for agente in self.agentes:
-            agente.vivir_un_dia()
+            agente.vivir_un_dia(precio_comida=self.precio_comida)
+
+        if self.dia_actual % RENTA_CADA_DIAS == 0:
+            for agente in self.agentes:
+                agente.pagar_renta(RENTA_MONTO)
 
     def reporte_del_dia(self):
         """Print the state of every agent for the current day."""
@@ -40,8 +50,9 @@ class Ciudad:
                 "poblacion": 0,
                 "agentes_hambre_critica": 0,
                 "agentes_sin_dinero": 0,
-                "dinero_total": 0,
-                "dinero_promedio": 0,
+                "dinero_max": 0,
+                "dinero_min": 0,
+                "brecha_economica": 0,
                 "dinero_max": 0,
                 "dinero_min": 0,
                 "hambre_promedio": 0,
@@ -68,6 +79,7 @@ class Ciudad:
             "dinero_promedio": round(dinero_promedio, 2),
             "dinero_max": max(dineros),
             "dinero_min": min(dineros),
+            "brecha_economica": max(dineros) - min(dineros),
             "hambre_promedio": round(sum(hambres) / poblacion, 2),
             "energia_promedio": round(sum(energias) / poblacion, 2),
         }
@@ -104,7 +116,7 @@ if __name__ == "__main__":
     ciudad.agregar_agente(Agente("Pedro", "mesero", hambre=20, energia=100, dinero=0))
 
     print(f"=== Iniciando simulación de {ciudad.nombre} con {len(ciudad.agentes)} agentes ===\n")
-    ciudad.simular(dias=7)
+    ciudad.simular(dias=14)
 
     ciudad.exportar_historial("historial.json")
     print(f"\n=== Historial exportado a historial.json ({len(ciudad.historial)} días) ===")

@@ -26,8 +26,11 @@ ENERGY_THRESHOLD = 30
 HUNGER_DECAY_PER_DAY = 15
 ENERGY_DECAY_WHEN_WORKING = 20
 ENERGY_RECOVERY_WHEN_RESTING = 40
-FOOD_COST = 10
 FOOD_HUNGER_RECOVERY = 50
+
+# Default food price, used when an agent isn't told a specific price
+# (e.g. when testing Agente on its own, outside a Ciudad)
+DEFAULT_FOOD_COST = 10
 
 
 def clamp(value, minimum=0, maximum=100):
@@ -47,11 +50,13 @@ class Agente:
         self.dinero = max(0, dinero)  # money has no upper limit, but can't be negative
         self.ultima_accion = None  # for logging what happened each day
 
-    def comer(self):
+    def comer(self, precio_comida=DEFAULT_FOOD_COST):
         """Eat if there's enough money. Reduces money, increases hunger stat.
+        The food price is passed in (the Ciudad controls it, since it's
+        shared by the whole city and can change over time).
         Returns True if the agent managed to eat, False otherwise."""
-        if self.dinero >= FOOD_COST:
-            self.dinero -= FOOD_COST
+        if self.dinero >= precio_comida:
+            self.dinero -= precio_comida
             self.hambre = clamp(self.hambre + FOOD_HUNGER_RECOVERY)
             self.ultima_accion = "comió"
             return True
@@ -71,7 +76,16 @@ class Agente:
         self.energia = clamp(self.energia - ENERGY_DECAY_WHEN_WORKING)
         self.ultima_accion = f"trabajó como {self.profesion} (+{ingreso})"
 
-    def vivir_un_dia(self):
+    def pagar_renta(self, monto):
+        """Try to pay rent. If there's not enough money, the agent simply
+        can't pay this time (no penalty yet — that's a Phase 3.2 concern).
+        Returns True if the agent paid, False otherwise."""
+        if self.dinero >= monto:
+            self.dinero -= monto
+            return True
+        return False
+
+    def vivir_un_dia(self, precio_comida=DEFAULT_FOOD_COST):
         """
         Decide and perform one action for the day, based on priority:
         1. Try to eat if hunger is low.
@@ -83,7 +97,7 @@ class Agente:
         Hunger always decays naturally at the end of the day.
         """
         if self.hambre <= HUNGER_THRESHOLD:
-            pudo_comer = self.comer()
+            pudo_comer = self.comer(precio_comida)
             if not pudo_comer:
                 self.trabajar()
         elif self.energia <= ENERGY_THRESHOLD:

@@ -90,3 +90,26 @@ Each entry should include:
 - **Result:** Added `calcular_metricas()` to `Ciudad`, computing population, agents with critical hunger, agents with no money, total/average/min/max money, and average hunger/energy. These are now included in every daily snapshot in `historial.json`. Added a metrics panel below the canvas in the web page, showing all 8 numbers, updating as the day changes.
 - **Iterations:** 2 — the metrics panel showed empty at first because part of the JavaScript (the `dibujarMetricas` function) hadn't actually been saved into the file, even though it looked pasted. Diagnosed using the browser console (`typeof dibujarMetricas` returned `undefined`) and a text search in the editor.
 - **Notes:** Real lesson: "I pasted it" doesn't always mean it landed — verifying with the browser console (or a simple search in the file) is more reliable than assuming. Next improvement planned: move the metrics panel next to the canvas instead of below it, for better layout.
+
+
+### 2026-08-15 — Bug fix: layout shifting on long tooltip text
+- **AI used:** Claude
+- **Prompt(s):** Reported a visual bug: hovering over certain agents (Luis, Carlos) made the metrics panel disappear or jump position — but only on some days, and the bug seemingly "fixed itself" when DevTools (F12) was open.
+- **Result:** Diagnosed as a CSS layout bug: the left column (canvas + tooltip) had no fixed width, so longer tooltip text (from agents with longer "última acción" strings) stretched the column and pushed the metrics panel around. Fixed by giving the column a fixed width (matching the canvas) and allowing the tooltip text to wrap instead of stretching the layout.
+- **Iterations:** 1, but required back-and-forth observation to pin down the pattern (which days, why DevTools "fixed" it) before finding the real cause.
+- **Notes:** Good example of content-dependent layout bugs — the code technically "worked," but only revealed the bug with specific data. The clue that mattered most: noticing it changed when the window width changed (DevTools open vs closed).
+
+
+### 2026-08-17 — Phase 3.1: deeper economy (rent, shared food price, wealth gap)
+- **AI used:** Claude
+- **Prompt(s):** Requested making the food price controlled by Ciudad (not a fixed constant per agent) as groundwork for future events, plus a periodic rent charge and a wealth-gap metric.
+- **Result:** `Ciudad` now owns `precio_comida`, passed to each agent's `vivir_un_dia()`. Added `pagar_renta()` to `Agente`, charged automatically by `Ciudad` every 7 days. Added `brecha_economica` (richest minus poorest agent) to the metrics.
+- **Iterations:** 1 for the design, but the bug below took a full separate debugging session to resolve.
+- **Notes:** Money inequality is already visible after 14 days (gap grew from ~180 to ~255 between the richest and poorest agent) — a nice early signal that the simulation is starting to show emergent economic patterns, not just individual survival.
+
+### 2026-08-17 — Bug fix: unsaved file caused a duplicated line
+- **AI used:** Claude
+- **Prompt(s):** Reported that hunger was dropping by 30/day instead of 15/day, even after the code looked correct.
+- **Result:** After ruling out `__pycache__`, duplicate files, and checking the code multiple times, the real cause was much simpler: the file had unsaved changes in the editor (a duplicated line from an earlier paste) — the terminal was reading the old saved version from disk, which still had the duplication, regardless of what the editor displayed.
+- **Iterations:** Several rounds of investigation (checking pycache, searching for duplicate files, verifying via `cat` directly from disk) before finding the actual cause.
+- **Notes:** Real lesson: "the editor shows it correctly" is not proof that the file is saved. The unsaved-changes dot (●) on the tab was the actual signal, and checking it early would have saved a lot of back-and-forth. Worth remembering for future sessions.
