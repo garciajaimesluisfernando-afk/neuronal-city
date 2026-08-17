@@ -69,12 +69,19 @@ class Agente:
         self.energia = clamp(self.energia + ENERGY_RECOVERY_WHEN_RESTING)
         self.ultima_accion = "descansó"
 
-    def trabajar(self):
-        """Work to earn money based on profession. Costs energy."""
-        ingreso = PROFESSIONS[self.profesion]
+    def trabajar(self, multiplicador_ingreso=1.0):
+        """Work to earn money based on profession. Costs energy.
+        multiplicador_ingreso lets a city-wide event temporarily boost
+        or reduce income (e.g. a crisis or a festival)."""
+        ingreso = round(PROFESSIONS[self.profesion] * multiplicador_ingreso)
         self.dinero += ingreso
         self.energia = clamp(self.energia - ENERGY_DECAY_WHEN_WORKING)
         self.ultima_accion = f"trabajó como {self.profesion} (+{ingreso})"
+
+    def recibir_dinero(self, monto):
+        """Receive a direct payment (e.g. a government bonus event)."""
+        self.dinero += monto
+        self.ultima_accion = f"recibió un bono (+{monto})"
 
     def pagar_renta(self, monto):
         """Try to pay rent. If there's not enough money, the agent simply
@@ -85,7 +92,8 @@ class Agente:
             return True
         return False
 
-    def vivir_un_dia(self, precio_comida=DEFAULT_FOOD_COST):
+    def vivir_un_dia(self, precio_comida=DEFAULT_FOOD_COST, multiplicador_ingreso=1.0,
+                      multiplicador_hambre_decay=1.0):
         """
         Decide and perform one action for the day, based on priority:
         1. Try to eat if hunger is low.
@@ -95,18 +103,23 @@ class Agente:
         2. Rest if energy is low.
         3. Otherwise, work.
         Hunger always decays naturally at the end of the day.
+
+        multiplicador_ingreso and multiplicador_hambre_decay let a
+        city-wide event (Phase 3.2) temporarily change how much agents
+        earn or how fast they get hungry.
         """
         if self.hambre <= HUNGER_THRESHOLD:
             pudo_comer = self.comer(precio_comida)
             if not pudo_comer:
-                self.trabajar()
+                self.trabajar(multiplicador_ingreso)
         elif self.energia <= ENERGY_THRESHOLD:
             self.descansar()
         else:
-            self.trabajar()
+            self.trabajar(multiplicador_ingreso)
 
         # Natural hunger decay happens every day regardless of action
-        self.hambre = clamp(self.hambre - HUNGER_DECAY_PER_DAY)
+        decay = round(HUNGER_DECAY_PER_DAY * multiplicador_hambre_decay)
+        self.hambre = clamp(self.hambre - decay)
         
     def __str__(self):
         return (

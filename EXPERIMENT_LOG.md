@@ -113,3 +113,18 @@ Each entry should include:
 - **Result:** After ruling out `__pycache__`, duplicate files, and checking the code multiple times, the real cause was much simpler: the file had unsaved changes in the editor (a duplicated line from an earlier paste) — the terminal was reading the old saved version from disk, which still had the duplication, regardless of what the editor displayed.
 - **Iterations:** Several rounds of investigation (checking pycache, searching for duplicate files, verifying via `cat` directly from disk) before finding the actual cause.
 - **Notes:** Real lesson: "the editor shows it correctly" is not proof that the file is saved. The unsaved-changes dot (●) on the tab was the actual signal, and checking it early would have saved a lot of back-and-forth. Worth remembering for future sessions.
+
+
+### 2026-08-18 — Phase 3.2 design decision: event system architecture
+- **AI used:** Claude (proposal), reviewed and adjusted by the human project director based on ChatGPT's framing questions
+- **Prompt(s):** Asked Claude to design (not implement) the event system: trigger mechanism, duration, effects, JSON logging, and 4-6 initial events. Director then requested adjustments: configurable probability, one-event-at-a-time rule kept, full JSON logging kept, Festival redesigned to have a non-economic effect, and the architecture prepared (but not implemented) for future per-agent-differentiated effects.
+- **Result:** Agreed design: daily probability roll (default 8%, configurable via `Ciudad.probabilidad_evento_diario`) triggers one of 6 possible events, each with a fixed duration and a set of temporary multipliers (food price, income, hunger decay, rent). Festival was changed from "income boost" to "hunger decays 50% slower" — a wellbeing effect distinct from the economic ones. Each event definition includes an empty `efectos_por_profesion` field, reserved for a future phase where events could affect professions differently.
+- **Iterations:** N/A (design discussion)
+- **Notes:** Deciding the design *before* writing code, and explicitly reserving (but not building) a hook for future complexity, is a pattern worth repeating — it avoided over-engineering now while not closing the door later.
+
+### 2026-08-18 — Phase 3.2: random event system implementation
+- **AI used:** Claude
+- **Prompt(s):** Implement the MVP of the event system as designed above.
+- **Result:** Added 6 events (Inflación alimentaria, Festival de la ciudad, Crisis económica, Bono gubernamental, Aumento de renta, Escasez de comida) to `ciudad.py`. `Ciudad` now rolls for a random event each day, applies its effects via multipliers passed into `Agente.vivir_un_dia()` and `Agente.trabajar()`, and reverts them when the event's duration ends. The active event (or `null`) is now included in every daily snapshot in `historial.json`.
+- **Iterations:** 1 — verified with a fixed random seed (40-day run) that events trigger, apply the correct effect, count down, and expire correctly (confirmed exact rent doubling and confirmed hunger decay was roughly halved during a Festival).
+- **Notes:** Testing with a fixed seed (`random.seed(7)`) was key to being able to verify random behavior deterministically before showing it to the user — otherwise "did the event actually apply correctly" would have been hard to confirm by eye.
